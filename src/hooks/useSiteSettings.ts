@@ -9,6 +9,8 @@ export interface SiteSettings {
   linkedin_url?: string;
   twitter_url?: string;
   whatsapp_number?: string;
+  instagram_url?: string;
+  facebook_url?: string;
   created_at: string;
   updated_at: string;
 }
@@ -23,7 +25,10 @@ export const useSiteSettings = () => {
         .limit(1)
         .maybeSingle();
       
-      if (error) throw error;
+      if (error) {
+        console.error('Error fetching site settings:', error);
+        throw error;
+      }
       return data as SiteSettings | null;
     },
   });
@@ -34,23 +39,37 @@ export const useUpdateSiteSettings = () => {
   
   return useMutation({
     mutationFn: async (updates: Partial<SiteSettings>) => {
+      console.log('Updating site settings with:', updates);
+      
       // Get the first record to update
-      const { data: existing } = await supabase
+      const { data: existing, error: fetchError } = await supabase
         .from('site_settings')
         .select('id')
         .limit(1)
         .maybeSingle();
 
+      if (fetchError) {
+        console.error('Error fetching existing settings:', fetchError);
+        throw fetchError;
+      }
+
       if (existing?.id) {
         // Update existing record
         const { data, error } = await supabase
           .from('site_settings')
-          .update({ ...updates, updated_at: new Date().toISOString() })
+          .update({ 
+            ...updates, 
+            updated_at: new Date().toISOString() 
+          })
           .eq('id', existing.id)
           .select()
           .single();
         
-        if (error) throw error;
+        if (error) {
+          console.error('Error updating site settings:', error);
+          throw error;
+        }
+        console.log('Site settings updated successfully:', data);
         return data;
       } else {
         // Insert new record if none exists
@@ -64,12 +83,20 @@ export const useUpdateSiteSettings = () => {
           .select()
           .single();
         
-        if (error) throw error;
+        if (error) {
+          console.error('Error inserting site settings:', error);
+          throw error;
+        }
+        console.log('Site settings created successfully:', data);
         return data;
       }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('Site settings mutation successful:', data);
       queryClient.invalidateQueries({ queryKey: ['site-settings'] });
+    },
+    onError: (error) => {
+      console.error('Site settings mutation failed:', error);
     },
   });
 };

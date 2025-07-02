@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useSiteSettings } from "@/hooks/useSiteSettings";
 import { useSubscribeToNewsletter } from "@/hooks/useNewsletterSubscribers";
 import { useToast } from "@/hooks/use-toast";
-import { Linkedin, Twitter, Mail, MessageCircle } from "lucide-react";
+import { Linkedin, Twitter, Mail, MessageCircle, Instagram, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -53,10 +53,11 @@ const Footer = () => {
           
           {/* القسم الأيسر: الوصف المختصر والروابط */}
           <div className="order-1">
-            <h3 className="text-2xl font-bold mb-4">يزن صالح</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              {siteSettings?.site_name || "يزن صالح"}
+            </h3>
             <p className="text-primary-foreground/90 mb-6 leading-relaxed text-lg">
-              مدونة شخصية متخصصة في إدارة المنتجات الرقمية والنمو في الشركات الناشئة. 
-              أشارك تجاربي وخبراتي في عالم ريادة الأعمال والتكنولوجيا.
+              {siteSettings?.site_description || "مدونة شخصية متخصصة في إدارة المنتجات الرقمية والنمو في الشركات الناشئة. أشارك تجاربي وخبراتي في عالم ريادة الأعمال والتكنولوجيا."}
             </p>
             
             {/* أيقونات التواصل الاجتماعي */}
@@ -82,6 +83,30 @@ const Footer = () => {
                   title="Twitter"
                 >
                   <Twitter className="w-6 h-6" />
+                </a>
+              )}
+              
+              {siteSettings?.instagram_url && (
+                <a
+                  href={siteSettings.instagram_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full flex items-center justify-center transition-colors"
+                  title="Instagram"
+                >
+                  <Instagram className="w-6 h-6" />
+                </a>
+              )}
+              
+              {siteSettings?.facebook_url && (
+                <a
+                  href={siteSettings.facebook_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-12 h-12 bg-primary-foreground/10 hover:bg-primary-foreground/20 rounded-full flex items-center justify-center transition-colors"
+                  title="Facebook"
+                >
+                  <Facebook className="w-6 h-6" />
                 </a>
               )}
               
@@ -158,7 +183,7 @@ const Footer = () => {
         {/* Copyright */}
         <div className="border-t border-primary-foreground/20 pt-8 mt-12 text-center">
           <p className="text-primary-foreground/70">
-            © 2024 يزن صالح. جميع الحقوق محفوظة.
+            © 2024 {siteSettings?.site_name || "يزن صالح"}. جميع الحقوق محفوظة.
           </p>
         </div>
       </div>

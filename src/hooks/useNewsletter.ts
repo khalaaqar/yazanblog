@@ -10,6 +10,8 @@ interface SendNewsletterData {
 export const useSendNewsletter = () => {
   return useMutation({
     mutationFn: async ({ title, content, type }: SendNewsletterData) => {
+      console.log('Starting newsletter send process...');
+      
       // 1. جلب قائمة المشتركين من Supabase
       const { data: subscribers, error: subscribersError } = await supabase
         .from('newsletter_subscribers')
@@ -17,29 +19,35 @@ export const useSendNewsletter = () => {
         .eq('status', 'active');
 
       if (subscribersError) {
+        console.error('Error fetching subscribers:', subscribersError);
         throw subscribersError;
       }
+      
       if (!subscribers || subscribers.length === 0) {
         throw new Error('لا يوجد مشتركون في النشرة البريدية');
       }
 
-      // 2. استدعاء الـ Edge Function مع method و headers و JSON.stringify للـ body
+      console.log(`Found ${subscribers.length} active subscribers`);
+
+      // 2. تنظيف المحتوى من HTML tags للنص العادي
+      const cleanContent = content.replace(/<[^>]*>/g, '').trim();
+
+      // 3. استدعاء الـ Edge Function
       const { data, error } = await supabase.functions.invoke('send-newsletter', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+        body: {
           title,
-          content,
+          content: cleanContent,
           type,
-          subscribers, // مصفوفة المشتركين كما جلبناها أعلاه
-        }),
+          subscribers,
+        },
       });
 
       if (error) {
-        throw error;
+        console.error('Edge function error:', error);
+        throw new Error(error.message || 'فشل في إرسال النشرة البريدية');
       }
+
+      console.log('Newsletter sent successfully:', data);
       return data;
     },
   });

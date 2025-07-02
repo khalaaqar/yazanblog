@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/use-toast";
 
 const SiteSettingsTab = () => {
   const { toast } = useToast();
-  const { data: siteSettings } = useSiteSettings();
+  const { data: siteSettings, isLoading } = useSiteSettings();
   const updateSiteSettings = useUpdateSiteSettings();
 
   const [siteForm, setSiteForm] = useState({
@@ -19,6 +19,8 @@ const SiteSettingsTab = () => {
     linkedin_url: "",
     twitter_url: "",
     whatsapp_number: "",
+    instagram_url: "",
+    facebook_url: "",
   });
 
   useEffect(() => {
@@ -30,13 +32,26 @@ const SiteSettingsTab = () => {
         linkedin_url: siteSettings.linkedin_url || "",
         twitter_url: siteSettings.twitter_url || "",
         whatsapp_number: siteSettings.whatsapp_number || "",
+        instagram_url: siteSettings.instagram_url || "",
+        facebook_url: siteSettings.facebook_url || "",
       });
     }
   }, [siteSettings]);
 
   const handleSiteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!siteForm.site_name.trim()) {
+      toast({
+        title: "خطأ في البيانات",
+        description: "اسم الموقع مطلوب",
+        variant: "destructive",
+      });
+      return;
+    }
+
     try {
+      console.log('Submitting site settings:', siteForm);
       await updateSiteSettings.mutateAsync(siteForm);
       toast({
         title: "تم الحفظ بنجاح",
@@ -52,6 +67,28 @@ const SiteSettingsTab = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>إعدادات الموقع</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+              <div className="h-10 bg-gray-200 rounded"></div>
+            </div>
+            <div className="animate-pulse">
+              <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+              <div className="h-20 bg-gray-200 rounded"></div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
   return (
     <Card>
       <CardHeader>
@@ -60,7 +97,7 @@ const SiteSettingsTab = () => {
       <CardContent>
         <form onSubmit={handleSiteSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="site_name">اسم الموقع</Label>
+            <Label htmlFor="site_name">اسم الموقع *</Label>
             <Input
               id="site_name"
               value={siteForm.site_name}
@@ -68,8 +105,10 @@ const SiteSettingsTab = () => {
               placeholder="اسم موقعك"
               dir="rtl"
               style={{ direction: 'rtl', textAlign: 'right' }}
+              required
             />
           </div>
+          
           <div className="space-y-2">
             <Label htmlFor="site_description">وصف الموقع</Label>
             <Textarea
@@ -82,6 +121,7 @@ const SiteSettingsTab = () => {
               style={{ direction: 'rtl', textAlign: 'right' }}
             />
           </div>
+          
           <div className="space-y-2">
             <Label htmlFor="contact_email">البريد الإلكتروني للتواصل</Label>
             <Input
@@ -93,6 +133,7 @@ const SiteSettingsTab = () => {
               dir="ltr"
             />
           </div>
+          
           <div className="grid grid-cols-1 gap-4">
             <div className="space-y-2">
               <Label htmlFor="linkedin_url">LinkedIn</Label>
@@ -104,6 +145,7 @@ const SiteSettingsTab = () => {
                 dir="ltr"
               />
             </div>
+            
             <div className="space-y-2">
               <Label htmlFor="twitter_url">Twitter</Label>
               <Input
@@ -114,6 +156,29 @@ const SiteSettingsTab = () => {
                 dir="ltr"
               />
             </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="instagram_url">Instagram</Label>
+              <Input
+                id="instagram_url"
+                value={siteForm.instagram_url}
+                onChange={(e) => setSiteForm(prev => ({ ...prev, instagram_url: e.target.value }))}
+                placeholder="https://instagram.com/yourhandle"
+                dir="ltr"
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="facebook_url">Facebook</Label>
+              <Input
+                id="facebook_url"
+                value={siteForm.facebook_url}
+                onChange={(e) => setSiteForm(prev => ({ ...prev, facebook_url: e.target.value }))}
+                placeholder="https://facebook.com/yourpage"
+                dir="ltr"
+              />
+            </div>
+            
             <div className="space-y-2">
               <Label htmlFor="whatsapp_number">رقم الواتساب</Label>
               <Input
@@ -125,6 +190,7 @@ const SiteSettingsTab = () => {
               />
             </div>
           </div>
+          
           <Button 
             type="submit" 
             disabled={updateSiteSettings.isPending}
