@@ -64,7 +64,7 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // Get environment variables with defaults
-    const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
+    const SENDGRID_API_KEY = Deno.env.get("ALYazanBlogAPIKey");
     const FROM_ADDRESS = "alyazansal@gmail.com"; // Your verified sender email
     const FROM_NAME = "يزن صالح - مدونة إدارة المنتجات";
     const SITE_URL = Deno.env.get("SITE_URL") || "https://your-site.com";
