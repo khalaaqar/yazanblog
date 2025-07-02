@@ -63,10 +63,10 @@ const handler = async (req: Request): Promise<Response> => {
       );
     }
 
-    // Get environment variables
+    // Get environment variables with defaults
     const SENDGRID_API_KEY = Deno.env.get("SENDGRID_API_KEY");
-    const FROM_ADDRESS = Deno.env.get("EMAIL_FROM") || "noreply@example.com";
-    const FROM_NAME = Deno.env.get("EMAIL_FROM_NAME") || "نشرة الموقع";
+    const FROM_ADDRESS = "alyazansal@gmail.com"; // Your verified sender email
+    const FROM_NAME = "يزن صالح - مدونة إدارة المنتجات";
     const SITE_URL = Deno.env.get("SITE_URL") || "https://your-site.com";
 
     if (!SENDGRID_API_KEY) {
@@ -111,6 +111,7 @@ ${cleanContent}...
 اقرأ المزيد على: ${SITE_URL}
 
 ---
+مع تحيات يزن صالح
 تم إرسال هذه الرسالة لأنك مشترك في النشرة البريدية لدينا.`
           },
           {
@@ -122,14 +123,17 @@ ${cleanContent}...
                     <!-- Header -->
                     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 30px 20px; text-align: center;">
                       <h1 style="color: white; margin: 0; font-size: 28px; font-weight: bold;">
-                        ${type === "article" ? "مقال جديد" : "رحلة شركة جديدة"}
+                        ${type === "article" ? "📝 مقال جديد" : "🚀 رحلة شركة جديدة"}
                       </h1>
+                      <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 16px;">
+                        من يزن صالح - مدونة إدارة المنتجات
+                      </p>
                     </div>
                     
                     <!-- Content -->
                     <div style="padding: 30px 20px;">
                       <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
-                        مرحباً <strong>${subscriber.name}</strong>،
+                        مرحباً <strong style="color: #667eea;">${subscriber.name}</strong>،
                       </p>
                       
                       <p style="font-size: 16px; color: #666; margin-bottom: 25px;">
@@ -138,12 +142,12 @@ ${cleanContent}...
                           : "تم نشر رحلة شركة جديدة بعنوان:"}
                       </p>
                       
-                      <h2 style="color: #333; margin: 25px 0; font-size: 24px; line-height: 1.4;">
+                      <h2 style="color: #333; margin: 25px 0; font-size: 24px; line-height: 1.4; border-right: 4px solid #667eea; padding-right: 15px;">
                         ${title}
                       </h2>
                       
-                      <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 25px 0; border-right: 4px solid #667eea;">
-                        <p style="color: #555; line-height: 1.6; margin: 0; font-size: 16px;">
+                      <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 25px 0; border: 1px solid #e9ecef;">
+                        <p style="color: #555; line-height: 1.8; margin: 0; font-size: 16px;">
                           ${cleanContent}...
                         </p>
                       </div>
@@ -151,9 +155,18 @@ ${cleanContent}...
                       <!-- CTA Button -->
                       <div style="text-align: center; margin: 35px 0;">
                         <a href="${SITE_URL}" 
-                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
-                          اقرأ المزيد
+                           style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px 30px; text-decoration: none; border-radius: 25px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3); transition: all 0.3s ease;">
+                          📖 اقرأ المزيد
                         </a>
+                      </div>
+                      
+                      <!-- Signature -->
+                      <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #eee;">
+                        <p style="color: #666; font-size: 16px; margin: 0;">
+                          مع تحيات،<br>
+                          <strong style="color: #333;">يزن صالح</strong><br>
+                          <span style="color: #999; font-size: 14px;">خبير إدارة المنتجات والنمو</span>
+                        </p>
                       </div>
                     </div>
                     
@@ -162,6 +175,9 @@ ${cleanContent}...
                       <p style="font-size: 14px; color: #999; margin: 0; line-height: 1.5;">
                         تم إرسال هذه الرسالة لأنك مشترك في النشرة البريدية لدينا.<br>
                         إذا كنت لا ترغب في استقبال هذه الرسائل، يمكنك إلغاء الاشتراك في أي وقت.
+                      </p>
+                      <p style="font-size: 12px; color: #ccc; margin: 10px 0 0 0;">
+                        © 2024 يزن صالح. جميع الحقوق محفوظة.
                       </p>
                     </div>
                   </div>
