@@ -249,32 +249,7 @@
     overflow: hidden;
   }
 
-  .line-clamp-4 {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
   .aspect-square {
     aspect-ratio: 1 / 1;
-  }
-
-  /* Minimum height utilities for consistent card layouts */
-  .min-h-14 {
-    min-height: 3.5rem;
-  }
-
-  .min-h-20 {
-    min-height: 5rem;
-  }
-
-  /* Compact card utilities */
-  .min-h-10 {
-    min-height: 2.5rem;
-  }
-
-  .min-h-12 {
-    min-height: 3rem;
   }
 }
