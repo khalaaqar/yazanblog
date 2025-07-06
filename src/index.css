@@ -268,4 +268,13 @@
   .min-h-20 {
     min-height: 5rem;
   }
+
+  /* Compact card utilities */
+  .min-h-10 {
+    min-height: 2.5rem;
+  }
+
+  .min-h-12 {
+    min-height: 3rem;
+  }
 }

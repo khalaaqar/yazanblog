@@ -25,68 +25,67 @@ const Articles = () => {
           </p>
         </div>
 
-        {/* Articles Grid - 2 columns with uniform card heights */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Articles Grid - 5 columns for 10 compact cards */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
           {isLoading ? (
-            // Loading skeletons with fixed height
-            Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="bg-card rounded-lg overflow-hidden shadow-sm border h-72">
-                <div className="p-6 h-full flex gap-4">
-                  <Skeleton className="w-32 h-32 rounded flex-shrink-0" />
+            // Loading skeletons - 10 compact cards
+            Array.from({ length: 10 }).map((_, index) => (
+              <div key={index} className="bg-card rounded-lg overflow-hidden shadow-sm border h-64">
+                <div className="p-3 h-full flex flex-col">
+                  <Skeleton className="w-full h-24 rounded mb-3 flex-shrink-0" />
                   <div className="flex-1 flex flex-col">
-                    <Skeleton className="h-5 w-full mb-2" />
-                    <Skeleton className="h-16 w-full flex-1 mb-3" />
-                    <div className="flex items-center gap-3">
-                      <Skeleton className="h-5 w-20" />
-                      <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-4 w-3/4 mb-2" />
+                    <Skeleton className="h-12 w-full flex-1 mb-3" />
+                    <div className="flex items-center gap-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-3 w-20" />
                     </div>
                   </div>
                 </div>
               </div>
             ))
           ) : articles && articles.length > 0 ? (
-            articles.map((article) => (
+            articles.slice(0, 10).map((article) => (
               <Link key={article.id} to={`/article/${article.id}`}>
-                <div className="bg-card rounded-lg overflow-hidden shadow-sm border hover:shadow-lg transition-shadow cursor-pointer group relative h-72">
-                  <div className="p-6 h-full">
-                    <div className="flex gap-4 h-full" dir="rtl">
-                      {/* الصورة على اليمين - Fixed size with contain behavior */}
-                      <div className="w-32 h-32 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50 flex items-center justify-center">
-                        <img
-                          src={article.image_url || "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop"}
-                          alt={article.title}
-                          className="max-w-full max-h-full object-contain"
-                        />
-                      </div>
-                      
-                      {/* المحتوى على اليسار - Flexible with consistent layout */}
-                      <div className="flex-1 min-w-0 flex flex-col justify-between h-full">
-                        <div className="flex-1 min-h-0">
-                          <h3 className="text-lg font-bold text-card-foreground mb-3 leading-tight line-clamp-2 min-h-[3.5rem]">
-                            {article.title}
-                          </h3>
-                          
-                          <p className="text-muted-foreground text-sm leading-relaxed line-clamp-4 min-h-[5rem] mb-4">
-                            {article.excerpt}
-                          </p>
-                        </div>
+                <div className="bg-card rounded-lg overflow-hidden shadow-sm border hover:shadow-lg transition-all duration-300 cursor-pointer group relative h-64 hover:scale-105">
+                  <div className="p-3 h-full flex flex-col" dir="rtl">
+                    {/* الصورة في الأعلى - Compact size */}
+                    <div className="w-full h-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50 flex items-center justify-center mb-3">
+                      <img
+                        src={article.image_url || "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop"}
+                        alt={article.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    
+                    {/* المحتوى - Compact layout */}
+                    <div className="flex-1 flex flex-col justify-between min-h-0">
+                      <div className="flex-1">
+                        <h3 className="text-sm font-bold text-card-foreground mb-2 leading-tight line-clamp-2 min-h-[2.5rem]">
+                          {article.title}
+                        </h3>
                         
-                        {/* المعلومات في الأسفل - Fixed position */}
-                        <div className="flex items-center gap-3 flex-wrap mt-auto pt-2">
-                          <Badge variant="secondary" className="bg-primary/10 text-primary font-medium text-xs">
-                            {article.category}
-                          </Badge>
-                          <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                            <Calendar className="w-3 h-3" />
-                            <span>{new Date(article.created_at).toLocaleDateString('en-GB')}</span>
-                          </div>
-                        </div>
+                        <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3 min-h-[3rem] mb-3">
+                          {article.excerpt}
+                        </p>
                       </div>
                       
-                      {/* Arrow indicator */}
-                      <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <ChevronLeft className="w-4 h-4 text-primary" />
+                      {/* المعلومات في الأسفل - Compact */}
+                      <div className="flex flex-col gap-2 mt-auto">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary font-medium text-xs w-fit">
+                          {article.category}
+                        </Badge>
+                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                          <Calendar className="w-3 h-3" />
+                          <span>{new Date(article.created_at).toLocaleDateString('en-GB')}</span>
+                        </div>
                       </div>
+                    </div>
+                    
+                    {/* Arrow indicator */}
+                    <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ChevronLeft className="w-3 h-3 text-primary" />
                     </div>
                   </div>
                 </div>
@@ -99,8 +98,8 @@ const Articles = () => {
           )}
         </div>
 
-        {/* Load More Button - only show if there are more than 6 articles */}
-        {articles && articles.length > 6 && (
+        {/* Load More Button - show if there are more than 10 articles */}
+        {articles && articles.length > 10 && (
           <div className="text-center mt-12">
             <Button variant="outline" size="lg">
               تحميل المزيد من المقالات
