@@ -25,21 +25,21 @@ const Articles = () => {
           </p>
         </div>
 
-        {/* Articles Grid - 5 columns for 10 compact cards */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {/* Articles Grid - 2 columns × 5 rows for 10 cards */}
+        <div className="grid grid-cols-2 gap-6 max-w-4xl mx-auto">
           {isLoading ? (
-            // Loading skeletons - 10 compact cards
+            // Loading skeletons - 10 cards in 2 columns
             Array.from({ length: 10 }).map((_, index) => (
-              <div key={index} className="bg-card rounded-lg overflow-hidden shadow-sm border h-64">
-                <div className="p-3 h-full flex flex-col">
-                  <Skeleton className="w-full h-24 rounded mb-3 flex-shrink-0" />
+              <div key={index} className="bg-card rounded-lg overflow-hidden shadow-sm border h-72">
+                <div className="p-4 h-full flex flex-col">
+                  <Skeleton className="w-full h-32 rounded mb-4 flex-shrink-0" />
                   <div className="flex-1 flex flex-col">
-                    <Skeleton className="h-4 w-full mb-2" />
-                    <Skeleton className="h-4 w-3/4 mb-2" />
-                    <Skeleton className="h-12 w-full flex-1 mb-3" />
-                    <div className="flex items-center gap-2">
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-3 w-20" />
+                    <Skeleton className="h-5 w-full mb-2" />
+                    <Skeleton className="h-5 w-3/4 mb-3" />
+                    <Skeleton className="h-16 w-full flex-1 mb-4" />
+                    <div className="flex items-center gap-3">
+                      <Skeleton className="h-5 w-20" />
+                      <Skeleton className="h-4 w-24" />
                     </div>
                   </div>
                 </div>
@@ -48,51 +48,51 @@ const Articles = () => {
           ) : articles && articles.length > 0 ? (
             articles.slice(0, 10).map((article) => (
               <Link key={article.id} to={`/article/${article.id}`}>
-                <div className="bg-card rounded-lg overflow-hidden shadow-sm border hover:shadow-lg transition-all duration-300 cursor-pointer group relative h-64 hover:scale-105">
-                  <div className="p-3 h-full flex flex-col" dir="rtl">
-                    {/* الصورة في الأعلى - Compact size */}
-                    <div className="w-full h-24 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50 flex items-center justify-center mb-3">
+                <div className="bg-card rounded-lg overflow-hidden shadow-sm border hover:shadow-lg transition-all duration-300 cursor-pointer group relative h-72 hover:scale-105">
+                  <div className="p-4 h-full flex flex-col" dir="rtl">
+                    {/* الصورة في الأعلى */}
+                    <div className="w-full h-32 flex-shrink-0 overflow-hidden rounded-lg bg-gray-50 flex items-center justify-center mb-4">
                       <img
-                        src={article.image_url || "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=300&h=200&fit=crop"}
+                        src={article.image_url || "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=400&h=250&fit=crop"}
                         alt={article.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
                     
-                    {/* المحتوى - Compact layout */}
+                    {/* المحتوى */}
                     <div className="flex-1 flex flex-col justify-between min-h-0">
                       <div className="flex-1">
-                        <h3 className="text-sm font-bold text-card-foreground mb-2 leading-tight line-clamp-2 min-h-[2.5rem]">
+                        <h3 className="text-base font-bold text-card-foreground mb-2 leading-tight line-clamp-2 min-h-[3rem]">
                           {article.title}
                         </h3>
                         
-                        <p className="text-muted-foreground text-xs leading-relaxed line-clamp-3 min-h-[3rem] mb-3">
+                        <p className="text-muted-foreground text-sm leading-relaxed line-clamp-3 min-h-[4rem] mb-4">
                           {article.excerpt}
                         </p>
                       </div>
                       
-                      {/* المعلومات في الأسفل - Compact */}
+                      {/* المعلومات في الأسفل */}
                       <div className="flex flex-col gap-2 mt-auto">
-                        <Badge variant="secondary" className="bg-primary/10 text-primary font-medium text-xs w-fit">
+                        <Badge variant="secondary" className="bg-primary/10 text-primary font-medium text-sm w-fit">
                           {article.category}
                         </Badge>
-                        <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                          <Calendar className="w-3 h-3" />
+                        <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                          <Calendar className="w-4 h-4" />
                           <span>{new Date(article.created_at).toLocaleDateString('en-GB')}</span>
                         </div>
                       </div>
                     </div>
                     
                     {/* Arrow indicator */}
-                    <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <ChevronLeft className="w-3 h-3 text-primary" />
+                    <div className="absolute top-3 left-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <ChevronLeft className="w-4 h-4 text-primary" />
                     </div>
                   </div>
                 </div>
               </Link>
             ))
           ) : (
-            <div className="col-span-full text-center py-12">
+            <div className="col-span-2 text-center py-12">
               <p className="text-muted-foreground text-lg">لا توجد مقالات متاحة حالياً.</p>
             </div>
           )}
